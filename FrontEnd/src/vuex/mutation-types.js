@@ -1,0 +1,3 @@
+export const USER_TOKEN= 'USER_TOKEN'
+export const USER_ISLOGINED= 'USER_ISLOGINED'
+export const USER_UINFO= 'USER_UINFO'

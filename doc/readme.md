@@ -23,6 +23,13 @@ hidden: false 是否可用
     通过的题目数量
 ```
 
+### invite-model设计
+
+```
+_id
+exp:Date 时间
+used:Boolean
+```
 ### 用户API
 
 | API         | 作用                          |

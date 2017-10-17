@@ -1,0 +1,73 @@
+html,body {
+  height:100%;
+}
+
+#app {
+  height:100%;
+}
+
+.layout {
+  background: #f5f7f9;
+  border: 1px solid #d7dde4;
+  min-height:400px;
+}
+
+.layout-container {
+  min-height: 200px;
+  margin:50px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+
+/*控制user info login reg*/
+
+.user-input-content {
+  width:50%;
+  height:100%;
+  margin:0 auto;
+  text-align:center;
+  padding:4em;
+  padding-top:300px;
+}
+.user-input-content span {
+  color:#fff;
+}
+
+.user-input-content .ivu-input-wrapper {
+  margin-bottom:10px;
+}
+
+.user-input-item {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+/*.ivu-input-type,*/
+/*.ivu-input-type input*/
+/*{*/
+  /*padding:10px 0 10px 0;*/
+  /*width:80%;*/
+  /*height:50px;*/
+  /*margin:0 auto;*/
+  /*font-size:16px;*/
+/*}*/
+
+.ivu-input-type .ivu-input-group-prepend {
+  background-color:#57c5f7;
+}
+
+.ivu-input-type i {
+  font-size:16px;
+}
+
+.user-input-content .ivu-btn-large {
+  margin-top:5px;
+  height:40px;
+  width:120px;
+  font-size:20px;
+}
+/*控制user info login reg -- 结束*/
+
+
+
