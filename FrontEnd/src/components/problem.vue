@@ -137,7 +137,7 @@ export default {
           return;
         }
         sub.getOne(self.submit_id,isContest).then(function(data){
-          if( data.status == 'judging') return;
+          if( data.result.status !== 'judged') return;
 
           if( data.result.verdict == 6 ) // 编译失败
           {
