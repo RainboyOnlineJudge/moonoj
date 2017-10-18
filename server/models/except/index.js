@@ -2,6 +2,7 @@ var fs  =require("fs")
 var path = require("path")
 var mongoose = require("mongoose")
 var autoIncrement = require("mongoose-auto-increment")
+var md5 = require('md5')
 
 mongoose.Promise = require('bluebird');
 
@@ -38,4 +39,19 @@ function loadModels(_path){
   })
 }
 
+async function create_admin_user(){
+  let doc = await M['user'].findOne({username:C.admin_name})
+  if( doc  === null){
+    debug("开始创建admin用户...")
+    let secret = 
+    await M['user'].create({
+      username:C.admin_name,
+      secret:  md5(C.admin_secret),
+      isAdmin:true
+    })
+    debug("创建admin用户成功!")
+  }
+}
+
 loadModels(base)
+create_admin_user()

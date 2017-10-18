@@ -23,6 +23,9 @@ module.exports = async function(req,res,next){
     debug('%s 不是比赛',_id)
   }
 
+  let pid = req.body.revert.pid
+  debug("处理的题目是:",pid)
+
   let body = req.body
   let result = []
   let total_memory = 0
@@ -46,8 +49,8 @@ module.exports = async function(req,res,next){
       total_memory += result[i].memory
     }
     score = Math.ceil(score) // 向上取整
-    if( score >= 99)
-      await M['problem'].updateOne({_id:_id},{'$inc':{passed:1}})
+    if( score >= 99 && pid)
+      await M['problem'].updateOne({_id:pid},{'$inc':{passed:1}})
   }
   
   let _data = {

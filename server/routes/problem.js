@@ -41,6 +41,7 @@ router.get('/list',U.verifyToken,async function(req,res,next){
   })
 
 })
+
 /* 创建题目 
  * 
   title
@@ -57,11 +58,28 @@ router.get('/list',U.verifyToken,async function(req,res,next){
   creator
   source:String,//题目来源
  * */
-router.post('/create',U.verifyToken,async function(req,res,next){
+router.post('/create',U.verifyToken,U.verifyAdminToken, async function(req,res,next){
   let id = req.uinfo._id
   let data = req.body
   data.creator = id
   await M['problem'].create(data)
+  res.json({
+    status:0,
+    message:"ok"
+  })
+})
+
+//题目更新
+//pid
+router.post('/update',U.verifyToken,U.verifyAdminToken, async function(req,res,next){
+  let id = req.uinfo._id
+
+  let data = req.body
+  let pid = data.pid
+
+  delete data.pid
+
+  let doc = await M['problem'].findOneAndUpdate({_id:pid},data)
   res.json({
     status:0,
     message:"ok"

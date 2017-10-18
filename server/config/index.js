@@ -8,6 +8,8 @@ module.exports ={
   "judge_server_token":'mytoken',
   "judge_interval_time":60*1000,//多长时间检测一个judge中要post的数据,ms
   "r_url":'http://192.168.20.253:3000/judge/deal',
+  "admin_name":"root",
+  "admin_secret":"5978",
   "DB":{
     addr:"mongodb://localhost/moonoj",
     opts:{

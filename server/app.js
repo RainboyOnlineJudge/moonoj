@@ -17,7 +17,6 @@ global.M = {}
 require('./models/except')
 
 
-
 var index = require('./routes/index');
 var users = require('./routes/users');
 

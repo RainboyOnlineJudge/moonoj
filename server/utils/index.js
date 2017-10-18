@@ -6,6 +6,7 @@ var jwt = require("jsonwebtoken")
 function verify_token(req,res,next){
   
   let token = req.headers["token"]
+  debug('token:',token)
   if(token === undefined){
     next({
       status:-1,
@@ -26,9 +27,20 @@ function verify_token(req,res,next){
   }
 }
 
+function verifyAdminTokn(req,res,next){
+  if(req.uinfo.isAdmin)
+    next()
+  else
+    next({
+      status:-1,
+      message:"you are not admin"
+    })
+}
+
 module.exports = {
   gen:shortid.generate,
   pathJoin:path.join,
   token:jwt,
-  verifyToken:verify_token
+  verifyToken:verify_token,
+  verifyAdminToken:verifyAdminTokn
 }

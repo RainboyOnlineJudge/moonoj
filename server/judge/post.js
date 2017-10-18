@@ -41,6 +41,9 @@ async function post(pid,uid,data,cid){
   }
   let revert = {contest:true} // 默认是比赛的题目
 
+  //posted+1
+  M['problem'].updateOne({_id:pid},{'$inc':{posted:1}}).exec()
+
   // 是否是比赛的题目
   debug('是否是比赛,cid=:',cid)
   let doc;
@@ -58,6 +61,7 @@ async function post(pid,uid,data,cid){
   //设置提交的数据库
   
   revert._id = doc._id
+  revert.pid = pid
 
   //2.测评
   await post_judge({

@@ -18,6 +18,7 @@
 </template>
 
 <script>
+var RESULT_CODE  = require('../config.js').RESULT_CODE
 export default {
   name: 'rtable',
   data () {
@@ -42,7 +43,12 @@ export default {
         {
           title:'结果',
           render:function(h,params){
-            return h('Tag',params.row.result)
+            let k = params.row.result
+            return h('Tag',{
+              props:{
+                color: RESULT_CODE[k].color
+              }
+            },RESULT_CODE[k].code)
           }
         },
       ]
