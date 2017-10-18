@@ -155,7 +155,7 @@ const router =  new Router({
 })
 
 router.beforeEach((to,from,next)=>{
-    if(to.name === 'Login')
+    if(to.name === 'Login' || to.name = 'Reg')
       next()
     else
     store.dispatch('checkoutIsLogined')
