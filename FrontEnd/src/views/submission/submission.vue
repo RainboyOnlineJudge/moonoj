@@ -1,5 +1,25 @@
 <template>
   <div>
+    <div class="toolbar">
+      <Row>
+        <Col span="12">
+        <Button icon="loop" :loading="refresh_button" type="primary" :disabled="auto_request" @click="refresh_button_click">
+          <span v-if="!refresh_button">刷新</span>
+          <span v-else>Loading</span>
+        </Button>
+        </Col>
+        <Col span="12">
+          <span>
+            自动刷新/10s:
+          </span>
+          <i-switch size="large" :value="auto_request" @on-change="switch_change">
+            <span slot="open">开启</span>
+            <span slot="close">关闭</span>
+          </i-switch>
+        </Col>
+      </Row>
+    </div>
+
     <vtable
       ref="vtable"
       size="default"
@@ -9,12 +29,13 @@
       url="sub/normal"
       >
     </vtable>
-    <Button @click="refresh">刷新</Button>
   </div>
 </template>
 
 <script>
 import vtable from '../../components/vtable.vue'
+import { mapGetters,mapActions } from 'vuex'
+
 var RESULT_CODE  = require('../../config.js').RESULT_CODE
 
 var language_color = {
@@ -30,8 +51,9 @@ var judge_color =  {
 export default {
   data(){
     return {
-      count:50,
+      count:30,
       page:1,
+      refresh_button:false,
       columns:[
         {
           type: 'index',
@@ -143,11 +165,31 @@ export default {
   },
   mounted(){
     this.refresh()
+    setInterval(this.auto_get_sub,10000)
   },
   methods:{
     refresh(){
       this.$refs.vtable.refresh()
-    }
+    },
+    switch_change(){
+      this.auto_request_toggle()
+    },
+    auto_get_sub(){
+      if( this.auto_request){
+        console.log('auto_get_sub')
+        this.refresh()
+      }
+    },
+    refresh_button_click(){
+      let self = this
+      self.refresh_button = true
+      setTimeout(function(){self.refresh_button = false},5000)
+      self.refresh()
+    },
+    ...mapActions(['auto_request_toggle'])
+  },
+  computed:{
+    ...mapGetters(['auto_request'])
   }
 }
 </script>
@@ -167,5 +209,9 @@ export default {
 
 .ivu-table td,th{
   text-align:center !important;
+}
+
+.toolbar {
+  margin-bottom:20px;
 }
 </style>
