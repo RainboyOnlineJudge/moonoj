@@ -155,7 +155,13 @@ export default {
               )
             }
             return h('p',ha);
+          },
+          {
+            title:"得分",
+            key:'score',
+            width:60
           }
+
         }
       ],
     }
