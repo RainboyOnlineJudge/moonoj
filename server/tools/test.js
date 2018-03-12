@@ -35,5 +35,5 @@ var inviteModel = mongoose.model('problem',require('../models/problem.js'),'prob
 
 
 async function tt(){
-  await inviteModel.updateOne({})
+  await inviteModel.updateOne({_id:})
 }

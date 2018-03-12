@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var fse = require('fs-extra')
 var jwt = require('jsonwebtoken');
 var moment = require("moment")
 
 var multer  = require('multer')
-
+var upload = multer({ dest: 'uploads/' })
 
 /* 得到题目列表 */
 router.get('/list',U.verifyToken,async function(req,res,next){
@@ -12,8 +13,13 @@ router.get('/list',U.verifyToken,async function(req,res,next){
 
   let dataCount = parseInt(req.query.count) || 10
   let currentPage = parseInt(req.query.page) || 1
+
+  let qdata = {hidden:false}
+  if(req.uinfo.isAdmin)
+    delete qdata.hidden
+
   
-  let total = await M['problem'].find({hidden:false}).count()
+  let total = await M['problem'].find(qdata).count()
 
   let total_page_count = Math.ceil(total / dataCount)
 
@@ -27,7 +33,7 @@ router.get('/list',U.verifyToken,async function(req,res,next){
 
   let skip = (dataCount*(currentPage-1))
 
-  let data = await M['problem'].find({hidden:false})
+  let data = await M['problem'].find(qdata)
     .sort("_id")
     .select('-content')
     .skip(skip).limit(dataCount)
@@ -49,6 +55,7 @@ router.get('/list',U.verifyToken,async function(req,res,next){
   tag
   time
   memory
+  stack
   spj
   ctime
   score
@@ -87,7 +94,31 @@ router.post('/update',U.verifyToken,U.verifyAdminToken, async function(req,res,n
 })
 
 /* 题目数据上传*/
-router.post('/:id/upload',async function(req,res,next){
+/*  单文件,文件名为 data
+ *  force 要不要先删除
+ * 
+ * */
+router.post('/:id/upload',upload.single('data'),async function(req,res,next){
+
+  let force = false
+  let file = req.file
+  let data_path = U.pathJoin(C.data_path,req.params.id)
+  if(req.query.force){//删除
+    force = true;
+    await fse.emptyDir(data_path)
+  }
+  else if(fse.pathExistsSync(data_path)){ //检查是不是有这个文件或文件夹
+    res.json({
+      status:-1,
+      message:"数据目录已经存在,如果要强制上传使用?force=true 参数"
+    })
+    return 
+  }
+
+   //解压
+   //检查数据
+   //删除数据
+   fse.remove(file.path)
 
 })
 

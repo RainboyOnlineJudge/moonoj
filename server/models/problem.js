@@ -7,6 +7,7 @@ var ProblemSchema = new Schema({
   tag:[{type:String,ref:'tag'}],
   time:{type:Number,default:1000},//限制的时间,ms
   memory:{type:Number,default:128},//限制的内存
+  stack:{type:Number,default:128},//栈限制的内存
   spj:{type:String,default:'fcmp'},//评测的
   ctime:{type:Date,default:Date.now},//创建时间
   score:{type:Number,default:100},

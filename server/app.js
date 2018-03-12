@@ -3,12 +3,15 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var fs = require('fs')
+var cors = require("cors")
 
 
 /*===== global var ===== */
 
 global.U = require("./utils")
 global.C = require("./config")
+
 
 global.debug = require('debug')('debug')
 
@@ -21,10 +24,12 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var io = require('socket.io')
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
+app.use(cors())
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,30 +37,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //头像地址
 app.use('/avatar',express.static(C.avatar_path));
 
-
-
-// 处理跨域
-app.all('*', corsConfig)
-function corsConfig (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Credentials', true)
-  res.header('Access-Control-Allow-Headers', 'token,Content-Type,Content-Length,Authorization, Access,X-Requested-With')
-  res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,PATCH,OPTIONS')
-  if (res.method === 'OPTIONS') {
-    res.send(200)
-  } else {
-    next()
-  }
-}
-
+var help = fs.readFileSync('./help.md',{encoding:'utf-8'})
 
 app.use('/', index);
 app.use('/user', users);
 app.use('/contest', require("./routes/contest.js"));
 app.use('/problem', require("./routes/problem.js"));
 app.use('/sub', require("./routes/submission.js"));
+app.get("/help",function(req,res,next){
+    res.json({
+      help:help
+    })
+})
+
 app.use('/judge',require('./routes/judge.js'));
 
+//处理 judge的 socket.io
+const io_judge = io.of('/judge')
+// judgeServer 是否连接成功
+global.judgeServer_is_contented = false
+global.NSP = io_judge
+
+require('./judge/index2.js')(io_judge)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -76,4 +79,8 @@ app.use(function(err, req, res, next) {
   res.json(err);
 });
 
-module.exports = app;
+//module.exports = app;
+
+server.listen(3000,function(){
+  console.log('listen at port:')
+});

@@ -65,7 +65,8 @@ router.post('/reg',async function(req,res,next){
 router.post('/login', async function(req, res, next) {
   //检查密码,
   let uinfo = req.body
-  let user = await M["user"].findOne({username:uinfo.username,secret:uinfo.secret})
+  let isAdmin = uinfo.isAdmin || false
+  let user = await M["user"].findOne({username:uinfo.username,secret:uinfo.secret,isAdmin:isAdmin})
   if( user != null){
 
     let token = U.token.sign({
