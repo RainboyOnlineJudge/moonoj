@@ -1,3 +1,11 @@
+## 配置
+
+
+配置api地址
+
+`config.js`里的`server_api`
+
+
 ## vuex 设计
 
 user:

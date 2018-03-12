@@ -23,7 +23,7 @@
             比赛
         </Menu-item>
         <div style="float:right">
-          <Menu-item name="5">
+          <Menu-item name="Help">
             <Icon type="ios-help"></Icon>
             帮助/关于
           </Menu-item>

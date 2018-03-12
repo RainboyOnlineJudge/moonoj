@@ -53,9 +53,27 @@ const RESULT_CODE = {
 
 const server_api = {
   dev_api:'"http://localhost:3000/"',
-  prod_api:'"http://localhost:3000/"'
+  prod_api:'"http://localhost:3000/"',
+
+}
+
+const g_config = {
+  judge_connecet_timeout:10000
+}
+
+
+// 评测相关的配置
+const judge_config = {
+  'WEBSERVER_JUDGERSER'   :-1,
+  'PREPARE_JUDGE'   :0,
+  'START_JUDGE':1,
+  'COMPILE':2,
+  'JUDGING':3,
+  'END_JUDGE':4,
 }
 
 exports.RESULT_CODE= RESULT_CODE
 exports.server_api = server_api
+exports.g_config = g_config
+exports.judge_config = judge_config
 

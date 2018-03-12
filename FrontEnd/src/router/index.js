@@ -20,8 +20,14 @@ import userSubmition  from '../views/user/submition.vue'
 import problemList from '../views/problem/list.vue'
 import problemInfo from '../views/problem/problemInfo.vue'
 
+
 //submission 相关
 import Submission from '../views/submission/submission.vue'
+  //进行 提交 与显示 评测结果的页面
+import Judge from '../views/submission/judge.vue'
+
+import Help from '../views/help.vue'
+
 
 //contest 相关
 import contestList from '../views/contest/contestlist.vue'
@@ -103,6 +109,11 @@ const router =  new Router({
       component: Submission
     },
     {
+      path:'/judge',
+      name:'Judge',
+      component: Judge
+    },
+    {
       path:'/contest-list',
       name:'contestList',
       component: contestList
@@ -141,6 +152,11 @@ const router =  new Router({
           component:cproblemSub
         }
       ]
+    },
+    {
+      path:'/help',
+      name:'Help',
+      component: Help
     },
     {
       path:'/404',

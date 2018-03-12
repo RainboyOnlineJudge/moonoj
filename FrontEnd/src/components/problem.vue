@@ -1,64 +1,87 @@
 <template>
-  <div>
-    <div class="problem-header">
-      <h1>{{problem.title}}</h1>
-        <div class="info">
-          <Tag type="dot">内存: {{problem.memory}}MB</Tag>
-          <Tag type='dot'>时间: {{problem.time}}MS</Tag>
-          <Tag type= "dot">提交/通过: {{problem.passed+ '/' +problem.posted}}</Tag>
+     <Row>
+       <Col span="18">
+          <div class="box-border problem-container">
+            <div class="problem-header">
+              <h1>{{problem.title}}</h1>
+                <div class="info">
+                  <Tag type="dot">内存: {{problem.memory}}MB</Tag>
+                  <Tag type='dot'>时间: {{problem.time}}MS</Tag>
+                  <Tag type= "dot">提交/通过: {{problem.passed+ '/' +problem.posted}}</Tag>
+                </div>
+            </div>
+            <div class="markdown-body" v-html="rawhtml">
+            </div>
+          <div class="problem-editor">
+            <h1>代码提交:</h1>
+            <h2>选择语言:</h2>
+            <Radio-group v-model="lang">
+              <Radio label="cpp">
+                <span>C++</span>
+              </Radio>
+              <Radio label="c">
+                <span>C</span>
+              </Radio>
+              <Radio label="pas">
+                <span>Pascal</span>
+              </Radio>
+              <Radio label="python3">
+                <span>Python3</span>
+              </Radio>
+            </Radio-group>
+
+            <h2>代码:</h2>
+            <div class="problem-button">
+              <Button type="primary" @click="submit">
+                <span>提交</span>
+              </Button>
+            </div>
+
+            <code-editor
+              v-model="code"
+              :options="editorOptions">
+            </code-editor>
+          </div>
         </div>
-    </div>
-    <div class="markdown-body" v-html="rawhtml">
-    </div>
-  <div class="problem-editor">
-    <h1>代码提交:</h1>
-    <span>选择语言:</span>
-    <Radio-group v-model="lang">
-      <Radio label="cpp">
-        <span>C++</span>
-      </Radio>
-      <Radio label="c">
-        <span>C</span>
-      </Radio>
-      <!--<Radio label="pas">-->
-        <!--<span>Pascal</span>-->
-      <!--</Radio>-->
-    </Radio-group>
-    <codemirror
-      ref="myEditor"
-      v-model:code="code"
-      :options="editorOptions"
-      >
-    </codemirror>
-    <div class="problem-button">
-      <Button type="primary" :loading="loading" @click="submit">
-        <span v-if="!loading">提交</span>
-        <span v-else>提交评测中...</span>
-      </Button>
-    </div>
-  </div>
-  <div class="problem-result">
-    <rtable :result="result" :ce="ce"></rtable>
-  </div>
-</div>
+       </Col>
+       <Col span="6">
+        <div class="problem-info-container">
+          <Row>
+            <Card :bordered="false">
+                <p slot="title">题目信息</p>
+                <ul class="problem-info-list">
+                  <li><strong>提交/通过</strong> <span>{{problem.passed+ '/' +problem.posted}}</span></li>
+                  <li><strong>标签</strong> <span>1</span></li>
+                  <li><strong>难度</strong> <span>1</span></li>
+                  <li><strong>内存</strong> <span>{{problem.memory}} mb</span></li>
+                  <li><strong>时限</strong> <span>{{problem.time}} ms</span></li>
+                </ul>
+            </Card>
+          </Row>
+          <br>
+          <Row>
+            <Card :bordered="false">
+                <p slot="title">标签列表[隐藏]</p>
+            </Card>
+          </Row>
+        </div>
+       </Col>
+    </Row>
 </template>
 
 <script>
 import api from '../services/problem.js'
-import rtable from '../components/rtbale.vue'
 import sub from '../services/submission.js'
 export default {
   data(){
     return {
       code:'',
-      ce:'',
       lang:'cpp',
       result:{},
       submit_id:null, // 提交的id
-      loading:false,
       editorOptions:{
-        tabSize:4,
-        mode: 'text/javascript',
+        tabSize:8,
+        mode: 'text/cpp',
         lineNumbers:true,
         line:true,
         styleSelectedText:true
@@ -69,7 +92,6 @@ export default {
     }
   },
   components:{
-    rtable
   },
   computed:{
     rawhtml(){
@@ -94,69 +116,43 @@ export default {
   methods:{
     submit(){
       let self = this
-      self.submit_id = null;
-      self.loading = true;
-      let route = this.$route
-      let id = route.params.id
-      let cid = route.params.cid
-      let model = 'contest'
-      if( cid == null || cid == undefined)
-      {
-        cid = null
-        model= 'normal'
-      }
-      // 
-      //console.log(id,cid,self.code,self.lang)
-      console.log('start submit problem')
-
-      // set 0
-      self.result = { result:[]}
+      //self.submit_id = null;
+      //self.loading = true;
+      //let route = this.$route
+      //let id = route.params.id
+      //let cid = route.params.cid
+      //let model = 'contest'
+      //if( cid == null || cid == undefined)
+      //{
+      //  cid = null
+      //  model= 'normal'
+      //}
+      //// set 0
+      //self.result = { result:[]}
       self.ce = ''
-      api.submit(id,cid,self.code,self.lang,model)
-        .then(function(data){
-          if( data._id)
-          {
-            self.submit_id = data._id;
-            self.polling() // 轮询
-          }
-        })
-    },
-    polling(isContest){  //轮询
-      let self = this
-      if( self.submit_id == null ||  self.submit_id == '') // 没有_id
-        return ;
-      let idx = 0;
-      let Interval = setInterval(function(){
-        idx++;
-        if(idx > 30){
-          self.loading = false;
-          clearInterval(Interval);
-          self.$Notice.error({
-            title:'获取代码评测失败!'
-          })
-          return;
+      if(self.code.length == 0){
+        console.log('代码为空')
+        this.$Message.info('代码不能为空');
+        return 
+      }
+
+      //设定
+      this.$store.dispatch('set_post_judge_data',{
+        code:this.code,
+        cmp:this.problem.spj || 'fcmp2',
+        lang:this.lang,
+        memory:this.problem.memory || 128,
+        time: this.problem.time /1000 || 1,
+        stack: this.problem.stack || 128,
+        judge_id: this.problem._id,
+        output_size:128,
+        revert:{
         }
-        sub.getOne(self.submit_id,isContest).then(function(data){
-          if( data.result.status !== 'judged') return;
-
-          if( data.result.verdict == 6 ) // 编译失败
-          {
-            console.log('编译失败')
-            console.log(data)
-            self.loading = false;
-            clearInterval(Interval);
-            self.ce = data.result.result[0]
-            return ;
-          }
-          self.result = data.result
-          //console.log(data)
-          self.loading = false;
-          clearInterval(Interval);
-        })
-
-      },1000)
-
-    }
+      })
+      this.$store.dispatch('set_pre_problem_path',this.$route.path)
+      console.log('跳转到judge页面')
+      this.$router.push('/Judge')
+    },
   },
   props:{
     id:{
@@ -184,10 +180,23 @@ export default {
 
 .CodeMirror{
   width:100%;
-  margin-top:20px;
+  margin-top:10px;
   margin-bottom:20px;
   border:1px solid #ddd;
   border-radius:5px;
+}
+
+.box-border {
+  //border:1px solid #d4d4d5;
+  border-radius:5px;
+}
+
+.problem-container {
+  background:#fff;
+  padding:5px 10px;
+}
+.problem-info-container{
+  padding:0 10px;
 }
 
 .problem-editor{
@@ -196,8 +205,14 @@ export default {
   //padding:50px;
   border-top:1px solid #ddd;
 }
+
+.problem-editor>.ivu-radio-group{
+  margin:5px 15px;
+}
 .problem-button {
-  text-align:center;
+  //text-align:center;
+  margin-top:10px;
+  padding-left:15px;
 }
 .problem-header h1{
   text-align:center;
@@ -214,5 +229,12 @@ export default {
 .problem-result {
   margin:20px auto;
   width:70%;
+}
+
+ul.problem-info-list >li {
+}
+ul.problem-info-list >li>span {
+  display:inline-block;
+  float:right;
 }
 </style>
