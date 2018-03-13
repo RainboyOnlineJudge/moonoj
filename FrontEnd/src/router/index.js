@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Index from '../views/index.vue'
 
 
-import UserBackground from '../views/user/moonbg.vue'
+import UserBackground from '../components/moonbg.vue'
 import UserLogin from '../views/user/login.vue'
 import UserReg from '../views/user/reg.vue'
 

@@ -6,7 +6,7 @@ import store from '../vuex/index.js' //引用vuex
 
 function post(self,_data_){
 
-    let socket = io("http://localhost:3000/judge");
+    let socket = io("/judge");
 
     //计时
     let timeOutId = setTimeout(function(){

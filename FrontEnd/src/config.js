@@ -52,8 +52,8 @@ const RESULT_CODE = {
 }
 
 const server_api = {
-  dev_api:'"http://localhost:3000/"',
-  prod_api:'"http://localhost:3000/"',
+  dev_api:'"/"',
+  prod_api:'"/"',
 
 }
 
