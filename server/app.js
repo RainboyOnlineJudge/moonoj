@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var fs = require('fs')
-var cors = require("cors")
+
 
 
 /*===== global var ===== */
@@ -28,11 +28,19 @@ var io = require('socket.io')
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
-app.use(cors())
+//　跨域
+if (process.env.DEBUG){
+  debug("开启跨域")
+  var cors = require("cors")
+  app.use(cors())
+}
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+/* FrontEnd地址 */
+app.use(express.static(C.FrontEnd_path));
 
 //头像地址
 app.use('/avatar',express.static(C.avatar_path));
@@ -82,5 +90,5 @@ app.use(function(err, req, res, next) {
 //module.exports = app;
 
 server.listen(3000,function(){
-  console.log('listen at port:')
+  console.log('listen at port: 3000')
 });
