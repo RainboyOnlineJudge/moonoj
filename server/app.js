@@ -26,7 +26,7 @@ var users = require('./routes/users');
 var app = express();
 
 //favicon
-app.use(favicon(__dirname + '/public/favicon.ico')
+app.use(favicon(__dirname + '/public/favicon.ico'))
 
 //开启gzip
 app.use(compression())
