@@ -11,6 +11,13 @@ module.exports = {
   entry: {
     app: './FrontEnd/src/main.js'
   },
+  externals:{
+    iview:"iview",
+    vue:"Vue",
+    "highlight.js":"hljs",
+    katex:"katex",
+    "socket.io-client":"io",
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

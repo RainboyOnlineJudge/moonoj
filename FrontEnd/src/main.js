@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import iView from 'iview'
-import 'iview/dist/styles/iview.css'
+//import 'iview/dist/styles/iview.css'
 import store from './vuex/index.js'
 
 //var markdown = require('./utils/chg_marked.js')
@@ -17,7 +17,7 @@ Vue.prototype.markdown_render = markdown
 import  'codemirror/lib/codemirror.css'
 import "rmarkedEditor/src/css/simplemde.css"
 import "rmarked/css/github-markdown.css"
-import "katex/dist/katex.min.css"
+//import "katex/dist/katex.min.css"
 import "highlight.js/styles/tomorrow-night-blue.css"
 
 Vue.use(rmarkedEditor)

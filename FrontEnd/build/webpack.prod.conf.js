@@ -54,9 +54,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       template: 'FrontEnd/index.html',
       inject: true,
       minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
+        //removeComments: true,
+        //collapseWhitespace: true,
+        //removeAttributeQuotes: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
@@ -72,7 +72,7 @@ var webpackConfig = merge(baseWebpackConfig, {
           module.resource &&
           /\.js$/.test(module.resource) &&
           module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
+            path.join(__dirname, '../../node_modules')
           ) === 0
         )
       }

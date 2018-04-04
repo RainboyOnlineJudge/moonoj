@@ -1,21 +1,45 @@
 # moon-oj
 
-> A Vue.js project
+**Moon Online Judge**是一个为中学信息学设计的开源OJ平台,这里存放的是前后端代码,评测端代码在[这里](https://github.com/RainboyOnlineJudge/rjudge)
 
-## Build Setup
+## 一.安装
 
-``` bash
-# install dependencies
-npm install
+### 1.1 FrontEnd(前端安装)
 
-# serve with hot reload at localhost:8080
-npm run dev
+```bash
+# clone 代码
+git clone https://github.com/RainboyOnlineJudge/moonoj.git
 
-# build for production with minification
-npm run build
+# 进入目录
+cd moonoj
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# 安装相应的包
+npm i 
+# cnmp i
+
+# 编译
+npm run fb
+
+# FrontEnd/dist 为编译出来的前端
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### 1.2 配置 server 端
+
+修改配置文件`server/config/index.js`
+
+创建相应的目录:
+todo
+
+复制相应的头像
+todo
+
+安装相应的包
+
+```bash
+cd server
+npm i
+#cnpm i
+```
+
+启动mongodb数据库`mongod --dbpath = your_path`
+

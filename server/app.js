@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var fs = require('fs')
-
+var compression = require('compression');
 
 
 /*===== global var ===== */
@@ -24,9 +24,16 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+//开启gzip
+app.use(compression())
+
+
 var io = require('socket.io')
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+
+
 
 //　跨域
 if (process.env.DEBUG){
