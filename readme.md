@@ -27,6 +27,8 @@ npm run fb
 
 修改配置文件`server/config/index.js`
 
+   - 相应的代码上传路径
+
 创建相应的目录:
 todo
 

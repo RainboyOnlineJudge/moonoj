@@ -3,9 +3,20 @@ var router = express.Router();
 var fse = require('fs-extra')
 var jwt = require('jsonwebtoken');
 var moment = require("moment")
+var decompress = require('decompress');
 
 var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, C.data_upload_path)
+  },
+  filename: function (req, file, cb) {
+    cb(null, req.params.id+ '.zip')
+  }
+})
+
+var upload = multer({ storage: storage })
 
 /* 得到题目列表 */
 router.get('/list',U.verifyToken,async function(req,res,next){
@@ -79,7 +90,7 @@ router.post('/create',U.verifyToken,U.verifyAdminToken, async function(req,res,n
 //题目更新
 //pid
 router.post('/update',U.verifyToken,U.verifyAdminToken, async function(req,res,next){
-  let id = req.uinfo._id
+  let uid = req.uinfo._id
 
   let data = req.body
   let pid = data.pid
@@ -98,28 +109,44 @@ router.post('/update',U.verifyToken,U.verifyAdminToken, async function(req,res,n
  *  force 要不要先删除
  * 
  * */
-router.post('/:id/upload',upload.single('data'),async function(req,res,next){
 
+
+/* 检查对应文件是否存在*/
+function uploadCheck(req,res,next){
+  let data_path = U.pathJoin(C.data_upload_path,req.params.id+'.zip')
+  req.data_upload_path = data_path
   let force = false
-  let file = req.file
-  let data_path = U.pathJoin(C.data_path,req.params.id)
-  if(req.query.force){//删除
-    force = true;
-    await fse.emptyDir(data_path)
-  }
-  else if(fse.pathExistsSync(data_path)){ //检查是不是有这个文件或文件夹
+  console.log(req.query)
+  if( req.query.force == 'true')
+    force = true
+  if(force == false && fse.pathExistsSync(data_path)){ //检查是不是有这个文件或文件夹
     res.json({
       status:-1,
-      message:"数据目录已经存在,如果要强制上传使用?force=true 参数"
+      message:"数据目录已经存在,可以强制上传"
     })
     return 
   }
+  next()
 
-   //解压
-   //检查数据
-   //删除数据
-   fse.remove(file.path)
+}
+router.post('/:id/upload/',uploadCheck,upload.single('data'),async function(req,res,next){
+  let unzip_path = U.pathJoin(C.data_path,req.params.id)
 
+
+  if(fse.pathExistsSync(unzip_path)){ 
+    fse.removeSync(unzip_path)
+  }
+
+  decompress(req.data_upload_path, unzip_path).then(files => {
+    let ff = files.map(file => {
+      return file.path
+    })
+    res.json({
+      status:0,
+      message:'上传完成',
+      files:ff
+    })
+  });
 })
 
 /* 得到题目信息 */

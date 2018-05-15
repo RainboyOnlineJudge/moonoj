@@ -30,8 +30,12 @@ const routes = [
       component: problemCreate
     },
     {
-      path: '/problem/fix',
+      path: '/problem/fix/',
       name: 'problemFix',
+      redirect:'/problem/fix/1000/'
+    },
+    {
+      path: '/problem/fix/:id',
       component: problemFix
     },
     {

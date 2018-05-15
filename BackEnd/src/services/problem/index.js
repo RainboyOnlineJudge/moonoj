@@ -5,4 +5,11 @@ export default {
   create(data){
     return api.post('problem/create',data)
   },
+  upload(data){
+    return api.post('problem/upload',data)
+  },
+  get(pid){
+    return api.get('problem/info/'+pid+'?force=true')
+  }
+
 }

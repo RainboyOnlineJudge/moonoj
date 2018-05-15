@@ -8,6 +8,15 @@
           <p>现在提交吗?</p>
     </Modal>
 
+    <Row v-show="modal == 'fix'">
+    <div style="display:inline-block">
+      <Input v-model="id">
+        <span slot="prepend">题目编号</span>
+      </Input>
+    </div>
+      <Button @click="jumpTo">跳转题目</Button>
+    </Row>
+
     <div class="problem-config-items">
       <h1> 题目设定 </h1>
       <br>
@@ -66,27 +75,43 @@
     <div class="uploadData" v-show="modal == 'fix'">
     <h1> 数据目录文件列表 </h1>
     <h1> 数据上传 </h1>
+
+    <div style="display:inline-block;margin:10px;">
+      <strong><span>强制上传</span></strong>
+      <i-switch v-model="force">
+        <span slot="open">是</span>
+        <span slot="close">否</span>
+      </i-switch>
+    </div>
     <h3>上传进度</h3>
-    <Progress :percent="45" status="active"></Progress>
-      <Upload
+    <Upload
         type="drag"
-        accept=".zip"
+        accept="application/zip"
+        name="data"
         :format=fileFormat
         :max-size="1048576"
         :on-format-error="onFormatError"
-        action="//jsonplaceholder.typicode.com/posts/">
+        :on-error="onError"
+        :on-success="onSuccess"
+        :action=uploadPath>
         <div style="padding: 20px 0">
           <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
           <p>Click or drag datafile(*.zip) here to upload</p>
-        </div>
-      </Upload>
+        </div> 
+    </Upload>
+      <div class="upload_data_files_list">
+        <h3>上传的数据文件列表(上传完后检查,不对重新上传)</h3>
+        <ul>
+          <li v-for="f in upload_data_files">{{f}}</li>
+        </ul>
+      </div>
     </div>
 
     <div class="markdownE">
       <h1>题目内容</h1>
       <br>
       <markdown-editor
-        v-model="input"
+        v-model="problem.content"
         :configs="configs"
         >
       </markdown-editor>
@@ -103,9 +128,11 @@ import problem from '@/services/problem/index.js'
 export default {
   data(){
     return {
-      fileFormat:['.zip'],
-      input:'',
+      force:false,
+      id:1000,
+      fileFormat:['zip'],
       modal1:false,
+      upload_data_files:[],
       configs:{
       },
       problem:{
@@ -117,6 +144,8 @@ export default {
         level:1,
         source:'原创',
         tag:[],
+        content:'',
+        score:100
       }
     }
   },
@@ -132,26 +161,100 @@ export default {
     }
   },
   mounted(){
-    console.log(this.modal)
+    this.id = this.$route.params.id
+    //得到题目具体的信息
+    if( this.modal == 'fix'){
+      console.log('开始获取题目的信息')
+      this.getProblem();
+    }
+  },
+  computed:{
+    uploadPath(){
+      let pid = this.$route.params.id || '1000'
+      let force = ''
+      if(this.force){
+        force+="?force=true"
+      }
+
+      return process.env.api +'problem/'+pid+'/upload/'+force
+
+    }
   },
   methods:{
     submit(){
       let self = this
-      if( this.modal == 'create')
+      if( this.modal == 'create') //创建题目的模式
         problem.create(this.problem).then(function(res){
+          console.log(res)
           if( res.status == 0)
-            this.$Notice.info({
+            self.$Notice.info({
               title:'创建题目成功',
               desc:'请上传题目的数据'
             });
         })
+      else if(this.modal == 'fix'){
+        let pid = this.$route.params.id
+        if(pid == undefined){
+          alert("pid 错误")
+          return
+        }
+        pid = parseInt(pid)
+        let data = this.problem
+        data.pid = pid
 
+        problem.upload(data).then(function(res){
+          console.log(res)
+          if( res.status == 0)
+            self.$Notice.success({
+              title:'更新题目成功',
+              desc:''
+            });
+        })
+
+      }
+    },
+    getProblem(){
+      let self = this
+      problem.get(this.id).then(function(info){
+        console.log(info)
+        self.problem = info.problem
+      })
     },
     onFormatError(file,fileList){
       this.$Notice.error({
           title:'不能持的文件类型:'+file.name,
           desc:'只能上传*.zip文件'
       })
+    },
+    onError(err,file,fileList){
+      console.log(err)
+      console.log(type(err))
+      this.$Notice.error({
+        title:'上传文件失败',
+        desc:'未知原因'
+      })
+    },
+    onSuccess(res,file,fileList){
+      if(res.status != 0){
+        this.$Notice.error({
+          title:'上传失败',
+          desc:res.message
+        })
+      }
+      else{
+        this.upload_data_files = res.files
+        this.$Notice.success({
+          title:'上传成功',
+          desc:res.message
+        })
+      }
+    },
+    jumpTo(){
+      this.$router.push('/problem/fix/'+this.id)
+      if( this.modal == 'fix'){
+        console.log('开始获取题目的信息')
+        this.getProblem();
+      }
     }
   }
 }
@@ -192,5 +295,8 @@ export default {
 
 .ivu-modal {
   //z-index:9999999999;
+}
+.upload_data_files_list {
+  margin:20px 50px;
 }
 </style>

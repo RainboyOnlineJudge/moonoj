@@ -15,6 +15,10 @@
 
 <script>
 import vtable from '../../components/vtable.vue'
+
+//list 的搜索操作
+
+
 export default {
   data(){
     return {
@@ -71,7 +75,7 @@ export default {
                 },
                 on:{
                   click:()=>{
-                    console.log('view')
+                    Vue.$router.push("/problem/fix/"+params.row._id)
                   }
                 }
               }),
