@@ -1,5 +1,4 @@
 var Schema = require("mongoose").Schema
-var autoIncrement = require('mongoose-auto-increment')
 var moment = require('moment')
 
 var ContestSchema = new Schema({
@@ -18,9 +17,5 @@ var ContestSchema = new Schema({
 
 
 ContestSchema.index({ctime:1})
-ContestSchema.plugin(autoIncrement.plugin,{
-  model:'contest',
-  startAt:1
-})
 
 module.exports = ContestSchema;
