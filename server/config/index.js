@@ -11,7 +11,7 @@ module.exports ={
   "admin_name":"root",
   "admin_secret":"5978",
   "data_path":"/server/data",   // 数据保存地址
-  "data_upload_path":"uploads/",// 上传数据的地址
+  "data_upload_path":"/server/uploads/",// 上传数据的地址
   "DB":{
     addr:"mongodb://localhost/moonoj",
     opts:{

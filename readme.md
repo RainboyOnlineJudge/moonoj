@@ -35,6 +35,9 @@ todo
 复制相应的头像
 todo
 
+或者直接运行脚本
+todo
+
 安装相应的包
 
 ```bash
@@ -43,5 +46,6 @@ npm i
 #cnpm i
 ```
 
-启动mongodb数据库`mongod --dbpath = your_path`
+mongodb的数据 版本3.6-latest
+启动mongodb数据库`mongod --dbpath  your_path --fork --syslog --bind_ip your_ip`
 
