@@ -32,9 +32,6 @@ npm run fb
 创建相应的目录:
 todo
 
-复制相应的头像
-todo
-
 或者直接运行脚本
 todo
 
