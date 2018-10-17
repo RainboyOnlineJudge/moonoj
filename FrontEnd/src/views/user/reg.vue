@@ -115,7 +115,8 @@ export default {
         username:self.username,
         realname:self.realname,
         secret:md5(self.secret),
-        invite_code:self.inviteCode
+        invite_code:self.inviteCode,
+        email:self.email
       }
 
       api.reg(data)

@@ -6,6 +6,16 @@ var moment = require("moment");
 var Promise = require('bluebird')
 
 
+/*  - 得到 比赛列表
+ *  - 得到id的比赛的题目列表和信息
+ *  - 创建/更新比赛
+ *  - 更新比赛,主要来创建题目
+ *  - 参加比赛
+ *
+ *
+ * */
+
+
 
 /* 得到 比赛 列表
  * params:

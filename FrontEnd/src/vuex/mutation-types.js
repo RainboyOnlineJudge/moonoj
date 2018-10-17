@@ -1,6 +1,7 @@
 export const USER_TOKEN= 'USER_TOKEN'
 export const USER_ISLOGINED= 'USER_ISLOGINED'
 export const USER_UINFO= 'USER_UINFO'
+export const USER_AVATAR= 'USER_AVATAR'
 
 export const SUB_NORMAL_AUTO_REQUEST = 'SUB_NORMAL_AUTO_REQUEST'
 

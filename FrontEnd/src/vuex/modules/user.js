@@ -1,17 +1,25 @@
 import * as types from '../mutation-types'
 import api from '../../services/user/index.js'
+import {md5} from '../../utils/index.js'
+
+
+var base_url = 'https://www.gravatar.com/avatar/'
+var size="200"
+var default_avatar = "https%3a%2f%2fs1.ax1x.com%2f2018%2f10%2f17%2fid4Rl4.jpg"
 
 const state = {
   islogined:false,
   token:'',
-  uinfo:{}
+  uinfo:{},
+  avatar:'', //头像地址
 }
 
 // getters
 const getters = {
   islogined: state => state.islogined,
   token:state =>state.token,
-  uinfo:state =>state.uinfo
+  uinfo:state =>state.uinfo,
+  avatar:state =>state.avatar
 }
 
 // actions
@@ -25,6 +33,8 @@ const actions = {
             commit(types.USER_TOKEN,__token)
             commit(types.USER_ISLOGINED,true)
             commit(types.USER_UINFO,data.uinfo)
+            let md5_url = md5(data.uinfo.email)
+            commit(types.USER_AVATAR,`${base_url}${md5_url}?s=${size}&d=${default_avatar}`)
             console.log("登录成功:",data)
         }
         else{
@@ -55,6 +65,9 @@ const mutations = {
   },
   [types.USER_UINFO](state,val){
     state.uinfo= val
+  },
+  [types.USER_AVATAR](state,val){
+    state.avatar= val
   }
 }
 

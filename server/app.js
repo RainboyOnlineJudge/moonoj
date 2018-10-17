@@ -80,9 +80,8 @@ require('./judge/index2.js')(io_judge)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    //返回主页,重定向回主页
+    res.redirect('/')
 });
 
 // error handler

@@ -89,11 +89,41 @@ function data_check(path){
 }
 
 
+
+/* 自动加载函数 */
+function autoload(_path_){
+    let basename = path.basename(_path_)
+    if( global[basename] == undefined)
+        global[basename] == {}
+    __autoload(basename,_path_)
+}
+
+function __autoload(name,_path_){
+
+  let files = fs.readdirSync(_path)
+  files.forEach( function(file){
+
+      if(  file == "except") return;
+      let file_path = path.join(_path_,file)
+      let stat = fs.statSync(file_path)
+
+      if( stat.isFile() && path.extname(file) == '.js'){
+          let basename = path.basename(file,'.js')
+          //载入
+          global[name][basename] = require(file_path)
+    }
+    else if(stat.isDirectory())
+      __autoload(name,file_path)
+  })
+}
+
+
 module.exports = {
   gen:shortid.generate,
   pathJoin:path.join,
   token:jwt,
   verifyToken:verify_token,
   verifyAdminToken:verifyAdminTokn,
-  data_check:data_check
+  data_check:data_check,
+  autoload:autoload
 }

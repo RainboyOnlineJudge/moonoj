@@ -7,6 +7,7 @@ var UserSchema = new Schema({
     username:String,
     realname:String,
     secret:String,
+    email:{type:String,default:'没有邮箱'},
     intime:{type:Date,default:Date.now},
     score:{type:Number,default:0},
     posted:{type:Array,default:[]},

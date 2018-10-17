@@ -24,11 +24,6 @@ export default {
           pathname:"userDetailInfo"
         },
         {
-          icon:"happy-outline",
-          str:"头像上传",
-          pathname:'userAvatar'
-        },
-        {
           icon:"ios-cloud-upload-outline",
           str:"用户提交",
           pathname:'userSubmition'

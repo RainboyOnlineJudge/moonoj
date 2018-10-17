@@ -13,7 +13,7 @@
       <div style="display:flex">
         <div class="user-info">
           <div class="carousel-img-container">
-            <img :src="imgDate"/>
+            <img :src="avatar"/>
           </div>
           <div class="user-name">
             <h2>{{uinfo.username}}</h2>
@@ -58,11 +58,9 @@ export default {
   methods:{
   },
   computed:{
-    imgDate:function(){
-      return process.env.api+'avatar/'+this.$store.state.user.uinfo.avatar;
-    },
     ...mapGetters([
-      'uinfo'
+      'uinfo',
+      'avatar'
     ])
   }
 }
@@ -74,7 +72,7 @@ export default {
 }
 
 .info-header, .user-info , .sub-calendar,.rank,.announcement,.contest-list-panel{
-  background:#fff;
+  background:#eee;
 }
 
 .info-header{
