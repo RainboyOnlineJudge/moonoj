@@ -16,6 +16,10 @@
       <span slot="prepend">重复密码:</span>
     </Input>
 
+    <Input v-model="email" icon="email" placeholder="邮箱,这个和头像有关">
+      <span slot="prepend">重复密码:</span>
+    </Input>
+
     <Input v-model="sex" icon="ios-person-outline" readonly placeholder="性别">
       <Select v-model="sex" slot="prepend" style="width:65px">
         <Option value="男">男</Option>
@@ -26,6 +30,7 @@
     <Input v-model="inviteCode"  icon="ios-barcode-outline" placeholder="邀请码">
       <span slot="prepend">&nbsp;&nbsp;&nbsp;&nbsp;邀请码:</span>
     </Input>
+
     <Button type="primary" icon="ios-compose-outline" @click="register">注册</Button>
     <Modal
         v-model="modal"
@@ -48,6 +53,7 @@ export default {
       secret:'',
       realname:'',
       re_secret:'',
+      email:'',
       sex:'男',
       inviteCode:'',
       modal:false,

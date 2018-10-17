@@ -1,11 +1,8 @@
-html,body {
-  background:#eee;
-}
 
 #app {
  // height:100%;
-  background:#eee;
 }
+
 
 .layout {
   background: #f5f7f9;
@@ -15,8 +12,8 @@ html,body {
 
 .layout-container {
   min-height: 200px;
-  margin:50px;
-  overflow: hidden;
+  /*overflow: hidden;*/
+  margin:50px 50px 0 50px;
   border-radius: 4px;
 }
 
@@ -29,7 +26,7 @@ html,body {
   margin:0 auto;
   text-align:center;
   padding:4em;
-  padding-top:300px;
+  padding-top:200px;
 }
 .user-input-content span {
   color:#fff;
