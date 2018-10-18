@@ -3,7 +3,6 @@ var Promise = require('bluebird')
 var config = require('../config/index.js')
 var fs = require('fs')
 var path = require('path')
-var post = require('./post.js')
 
 var client_io = require('socket.io-client')
 var jwt = require("jsonwebtoken")
@@ -48,9 +47,9 @@ function Judge(){
 }
 
 
-Judge.prototype.post= post
-Judge.prototype.normal = require("./normal.js")
-Judge.prototype.contest = require("./contest.js")
+//Judge.prototype.post= post
+//Judge.prototype.normal = require("./normal.js")
+//Judge.prototype.contest = require("./contest.js")
 
 
 function createJudgeClass(){

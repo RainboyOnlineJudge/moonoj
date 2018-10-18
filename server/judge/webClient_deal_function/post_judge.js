@@ -1,5 +1,5 @@
 /* 处理web 传递过来的参数 */
-
+var jwt = require("jsonwebtoken")
 module.exports = function (socket){
     //监听
     debug("client connect,id:",socket.id)
