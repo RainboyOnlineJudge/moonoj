@@ -1,5 +1,20 @@
 /* 处理web 传递过来的参数 */
 var jwt = require("jsonwebtoken")
+
+
+function post(pid,uid,data){
+  //posted+1
+  M['problem'].updateOne({_id:pid},{'$inc':{posted:1}}).exec()
+
+  return M['submission'].create({
+    pid:pid,
+    uid:uid,
+    lang:data.lang,
+    code:data.code
+  })
+}
+
+
 module.exports = function (socket){
     //监听
     debug("client connect,id:",socket.id)
@@ -70,7 +85,7 @@ module.exports = function (socket){
             return post(parseInt(data.judge_id),decode._id,_data_).then(function(doc,err){
                 data.revert.sid = doc._id
                 data.revert.pid = doc.pid
-                rjudge.emit('request_judge',_data_)
+                this.rjudge.emit('request_judge',_data_)
             })
 
         })

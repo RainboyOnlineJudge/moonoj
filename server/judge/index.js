@@ -42,12 +42,12 @@ function Judge(){
     this.NSP = NSP
 
     // web 连接server 的处理
-    this.NSP.on('connect',require("./webClient_deal_function/post_judge.js"))
+    this.NSP.on('connect',this.post)
 
 }
 
 
-//Judge.prototype.post= post
+Judge.prototype.post= require("./webClient_deal_function/post_judge.js")
 //Judge.prototype.normal = require("./normal.js")
 //Judge.prototype.contest = require("./contest.js")
 
