@@ -92,30 +92,37 @@ function data_check(path){
 
 /* 自动加载函数 */
 function autoload(_path_){
+    _path_ =  path.resolve(_path_); //得到绝对地址
     let basename = path.basename(_path_)
-    if( global[basename] == undefined)
-        global[basename] == {}
-    __autoload(basename,_path_)
-}
 
-function __autoload(name,_path_){
+    let ret_obj = {}
 
-  let files = fs.readdirSync(_path)
-  files.forEach( function(file){
+    //加载函数
+    function __autoload(_path_){
 
-      if(  file == "except") return;
-      let file_path = path.join(_path_,file)
-      let stat = fs.statSync(file_path)
+        let files = fs.readdirSync(_path_)
+        files.forEach( function(file){
 
-      if( stat.isFile() && path.extname(file) == '.js'){
-          let basename = path.basename(file,'.js')
-          //载入
-          global[name][basename] = require(file_path)
+            if(  file == "except") return;
+            let file_path = path.join(_path_,file)
+            let stat = fs.statSync(file_path)
+
+            if( stat.isFile() && path.extname(file) == '.js'){
+                let basename = path.basename(file,'.js')
+                //载入
+                ret_obj[basename] = require(file_path)
+            }
+            else if(stat.isDirectory())
+                __autoload(file_path)
+        })
     }
-    else if(stat.isDirectory())
-      __autoload(name,file_path)
-  })
+
+    __autoload(_path_)
+
+    //返回结果
+    return ret_obj
 }
+
 
 
 module.exports = {

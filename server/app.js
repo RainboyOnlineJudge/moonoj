@@ -32,7 +32,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'))
 app.use(compression())
 
 
-var io = require('socket.io')
+//var io = require('socket.io')
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
@@ -68,7 +68,7 @@ app.get("/help",function(req,res,next){
     })
 })
 
-app.use('/judge',require('./routes/judge.js'));
+//app.use('/judge',require('./routes/judge.js')); //废弃
 
 //处理 judge的 socket.io
 const io_judge = io.of('/judge')
@@ -76,7 +76,7 @@ const io_judge = io.of('/judge')
 global.judgeServer_is_contented = false
 global.NSP = io_judge
 
-require('./judge/index2.js')(io_judge)
+require('./judge/index.js')(io_judge)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
