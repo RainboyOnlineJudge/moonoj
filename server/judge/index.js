@@ -42,7 +42,7 @@ function Judge(){
     this.NSP = NSP
 
     // web 连接server 的处理
-    this.NSP.on('connect',this.post)
+    this.NSP.on('connect',this.post())
 
 }
 

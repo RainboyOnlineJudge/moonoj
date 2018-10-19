@@ -14,8 +14,9 @@ function post(pid,uid,data){
   })
 }
 
-
-module.exports = function (socket){
+function createPost(){
+    var self = this
+    return function (socket){
     //监听
     debug("client connect,id:",socket.id)
 
@@ -85,11 +86,12 @@ module.exports = function (socket){
             return post(parseInt(data.judge_id),decode._id,_data_).then(function(doc,err){
                 data.revert.sid = doc._id
                 data.revert.pid = doc.pid
-                this.rjudge.emit('request_judge',_data_)
+                self.rjudge.emit('request_judge',_data_)
             })
 
         })
 
     })
-
+    }
 }
+module.exports = 
