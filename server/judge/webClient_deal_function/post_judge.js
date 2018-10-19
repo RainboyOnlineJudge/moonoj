@@ -94,4 +94,4 @@ function createPost(){
     })
     }
 }
-module.exports = 
+module.exports = createPost

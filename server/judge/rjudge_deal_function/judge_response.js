@@ -43,7 +43,7 @@ function deal_result(data){
   }
 }
 
-module.exports  = function(){
+module.exports  = function(data){
   deal_result(data)
   NSP.connected[data.revert._id].emit('judge_response',data)
 }
