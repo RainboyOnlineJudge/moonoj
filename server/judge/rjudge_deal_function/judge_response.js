@@ -1,4 +1,5 @@
 /* 处理返回的结果 */
+var objectId = require("mongoose").Types.ObjectId
 
 function cmp(a,b){
   return a.count - b.count
